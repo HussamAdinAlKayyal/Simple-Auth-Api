@@ -15,11 +15,7 @@ public class RegisterService(UserManager<User> userManager) : IRegisterService
         {
             throw new Exception("The password is not identical to the password confirm!");
         }
-        User user = new(dto.FirstName, dto.LastName)
-        {
-            Email = dto.Email,
-            UserName = dto.Email,
-        };
+        User user = new(dto.Username, dto.FirstName, dto.LastName, dto.Email);
         IdentityResult result = await userManager.CreateAsync(user, dto.Password);
         if (!result.Succeeded)
         {

@@ -14,6 +14,31 @@ namespace BasicAuthApi.Controllers
 
         private readonly ILoginService loginService = loginService;
 
+        private async Task<IActionResult> LoginAsync(LoginUsingEmailDto? emailDto = null, LoginUsingUsernameDto? usernameDto = null)
+        {
+            try
+            {
+                string token;
+                if (emailDto is not null)
+                {
+                    token = await loginService.LoginUsingEmailAsync(emailDto);
+                }
+                else if (usernameDto is not null)
+                {
+                    token = await loginService.LoginUsingUsernameAsync(usernameDto);
+                }
+                else
+                {
+                    return Problem();
+                }
+                return Ok(new { token });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("register")]
         public async Task<ActionResult> RegisterAsync(RegisterDto dto)
         {
@@ -29,18 +54,16 @@ namespace BasicAuthApi.Controllers
             return Created();
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync(LoginUsingEmailDto dto)
+        [HttpPost("login-with-email")]
+        public async Task<IActionResult> LoginUsingEmailAsync(LoginUsingEmailDto dto)
         {
-            try
-            {
-                string token = await loginService.LoginUsingEmailAsync(dto);
-                return Ok(new { token });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return await LoginAsync(emailDto: dto);
+        }
+
+        [HttpPost("login-with-username")]
+        public async Task<IActionResult> LoginUsingUsernameAsync(LoginUsingUsernameDto dto)
+        {
+            return await LoginAsync(usernameDto: dto);
         }
 
         [HttpGet("me")]

@@ -1,3 +1,3 @@
 ﻿namespace BasicAuthApi.Models.Dtos;
 
-public record LoginDto(string Email, string Password);
+public record LoginUsingEmailDto(string Email, string Password);

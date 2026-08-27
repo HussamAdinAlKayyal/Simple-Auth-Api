@@ -8,7 +8,7 @@ namespace BasicAuthApi.Infrastructures.Implementations;
 
 public class JwtService : IJwtService
 {
-    public string GetAccessToken(string issuer, string audience, string key, params Claim[] claims)
+    public string GetAccessToken(string issuer, string audience, string key, double expiresInMin, params Claim[] claims)
     {
         DateTime now = DateTime.Now;
 
@@ -22,7 +22,7 @@ public class JwtService : IJwtService
             audience,
             notBefore: now,
             claims: claims,
-            expires: now.AddMinutes(3),
+            expires: now.AddMinutes(expiresInMin),
             signingCredentials: signingCredentials);
         
         return new JwtSecurityTokenHandler().WriteToken(token);

@@ -1,6 +1,3 @@
-﻿namespace BasicAuthApi.Models.Dtos
-{
-    public class LoginUsingUsernameDto
-    {
-    }
-}
+﻿namespace BasicAuthApi.Models.Dtos;
+
+public record LoginUsingUsernameDto(string Username, string Password);

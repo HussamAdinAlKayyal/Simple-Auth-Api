@@ -2,8 +2,16 @@
 
 namespace BasicAuthApi.Models;
 
-public class User(string firstName, string lastName) : IdentityUser
+public class User : IdentityUser
 {
-    public string FirstName { get; set; } = firstName;
-    public string LastName { get; set; } = lastName;
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+
+    public User(string userName, string firstName, string lastName, string email)
+    {
+        UserName = userName;
+        FirstName = firstName; 
+        LastName = lastName;
+        Email = email;
+    }
 }

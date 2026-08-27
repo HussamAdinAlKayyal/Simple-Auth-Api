@@ -14,13 +14,20 @@ namespace BasicAuthApi.Infrastructures.Implementations
 
         private readonly IConfiguration configuration = configuration;
 
-        public async Task<string> LoginUsingEmailAsync(LoginUsingEmailDto dto)
-        {
-            User? user = await userManager.FindByEmailAsync(dto.Email);
+        private enum LoginUsing { Email, Username }
 
-            if (user == null || !await userManager.CheckPasswordAsync(user, dto.Password))
+        private async Task<string> LoginAsync(string usernameOrEmail, string password, LoginUsing loginUsing)
+        {
+            User? user = loginUsing switch
             {
-                throw new Exception("Email or password is wrong, recheck them.");
+                LoginUsing.Email => await userManager.FindByEmailAsync(usernameOrEmail),
+                LoginUsing.Username => await userManager.FindByNameAsync(usernameOrEmail),
+                _ => throw new NotImplementedException(),
+            };
+
+            if (user == null || !await userManager.CheckPasswordAsync(user, password))
+            {
+                throw new Exception($"{loginUsing} or password is wrong, recheck them.");
             }
 
             string? issuer = configuration["Jwt:Issuer"],
@@ -36,6 +43,7 @@ namespace BasicAuthApi.Infrastructures.Implementations
                 issuer,
                 audience,
                 key,
+                30,
                 [
                     new("username", user.UserName!),
                     new("firstName", user.FirstName),
@@ -43,6 +51,16 @@ namespace BasicAuthApi.Infrastructures.Implementations
                     new("Email", user.Email!)
                 ]
             );
+        }
+
+        public async Task<string> LoginUsingEmailAsync(LoginUsingEmailDto dto)
+        {
+            return await LoginAsync(dto.Email, dto.Password, LoginUsing.Email);
+        }
+
+        public async Task<string> LoginUsingUsernameAsync(LoginUsingUsernameDto dto)
+        {
+            return await LoginAsync(dto.Username, dto.Password, LoginUsing.Username);
         }
     }
 }

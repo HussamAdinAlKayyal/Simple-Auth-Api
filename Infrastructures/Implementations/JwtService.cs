@@ -6,23 +6,25 @@ using System.Text;
 
 namespace BasicAuthApi.Infrastructures.Implementations;
 
-public class JwtService : IJwtService
+public class JwtService(JwtConfiguration jwt) : IJwtService
 {
-    public string GetAccessToken(string issuer, string audience, string key, double expiresInMin, params Claim[] claims)
+    private readonly JwtConfiguration jwt = jwt;
+
+    public string GetAccessToken(IEnumerable<Claim> claims)
     {
         DateTime now = DateTime.Now;
 
-        SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(key));
+        SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(jwt.Key));
         SigningCredentials signingCredentials = new(
             securityKey,
             SecurityAlgorithms.HmacSha256);
 
         JwtSecurityToken token = new(
-            issuer,
-            audience,
+            jwt.Issuer,
+            jwt.Audience,
             notBefore: now,
+            expires: now.AddMinutes(jwt.ExpiresInMin),
             claims: claims,
-            expires: now.AddMinutes(expiresInMin),
             signingCredentials: signingCredentials);
         
         return new JwtSecurityTokenHandler().WriteToken(token);

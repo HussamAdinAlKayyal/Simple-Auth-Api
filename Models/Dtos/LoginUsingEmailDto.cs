@@ -1,3 +1,8 @@
-﻿namespace BasicAuthApi.Models.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
 
-public record LoginUsingEmailDto(string Email, string Password);
+namespace BasicAuthApi.Models.Dtos;
+
+public record LoginUsingEmailDto(
+    [Required, EmailAddress] string Email,
+    [Required, StringLength(100, MinimumLength = 6)] string Password);
+    

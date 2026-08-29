@@ -4,5 +4,5 @@ namespace BasicAuthApi.Infrastructures.Interfaces;
 
 public interface IRegisterService
 {
-    Task RegisterAsync(RegisterDto dto);
+    Task<string> RegisterAsync(RegisterDto dto);
 }

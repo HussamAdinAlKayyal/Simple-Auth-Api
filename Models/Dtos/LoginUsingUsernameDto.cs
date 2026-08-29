@@ -1,3 +1,7 @@
-﻿namespace BasicAuthApi.Models.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
 
-public record LoginUsingUsernameDto(string Username, string Password);
+namespace BasicAuthApi.Models.Dtos;
+
+public record LoginUsingUsernameDto(
+    [Required, StringLength(100, MinimumLength = 4)] string Username,
+    [Required, StringLength(100, MinimumLength = 6)] string Password);

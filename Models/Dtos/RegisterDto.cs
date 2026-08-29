@@ -1,3 +1,11 @@
-﻿namespace BasicAuthApi.Models.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
 
-public record RegisterDto(string Username, string FirstName, string LastName, string Email, string Password, string ConfirmPassword);
+namespace BasicAuthApi.Models.Dtos;
+
+public record RegisterDto(
+    [Required, StringLength(100, MinimumLength = 4)] string Username,
+    [Required, StringLength(100, MinimumLength = 1)] string FirstName,
+    [Required, StringLength(100, MinimumLength = 1)] string LastName,
+    [Required, EmailAddress] string Email,
+    [Required, StringLength(100, MinimumLength = 6)] string Password,
+    [Required, StringLength(100, MinimumLength = 6)] string ConfirmPassword);

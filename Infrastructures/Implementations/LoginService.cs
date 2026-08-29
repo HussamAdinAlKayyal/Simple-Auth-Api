@@ -1,20 +1,22 @@
-﻿using BasicAuthApi.Infrastructures.Errors;
-using BasicAuthApi.Infrastructures.Interfaces;
+﻿using BasicAuthApi.Infrastructures.Interfaces;
 using BasicAuthApi.Models;
 using BasicAuthApi.Models.Dtos;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace BasicAuthApi.Infrastructures.Implementations
 {
-    public class LoginService(UserManager<User> userManager, IJwtService jwtService, IConfiguration configuration) : ILoginService
+    public class LoginService(UserManager<User> userManager, IJwtService jwtService) : ILoginService
     {
+        private enum LoginUsing 
+        { 
+            Email, 
+            Username 
+        }
+
         private readonly UserManager<User> userManager = userManager;
 
         private readonly IJwtService jwtService = jwtService;
-
-        private readonly IConfiguration configuration = configuration;
-
-        private enum LoginUsing { Email, Username }
 
         private async Task<string> LoginAsync(string usernameOrEmail, string password, LoginUsing loginUsing)
         {
@@ -27,30 +29,12 @@ namespace BasicAuthApi.Infrastructures.Implementations
 
             if (user == null || !await userManager.CheckPasswordAsync(user, password))
             {
-                throw new Exception($"{loginUsing} or password is wrong, recheck them.");
+                throw new ArgumentException($"{loginUsing} or password is wrong, recheck them out.");
             }
 
-            string? issuer = configuration["Jwt:Issuer"],
-                    audience = configuration["Jwt:Audience"],
-                    key = configuration["Jwt:Key"];
+            IEnumerable<Claim> claims = await user.GetClaimsAsync(userManager);
 
-            if (string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience) || string.IsNullOrEmpty(key))
-            {
-                throw new InternalServerException("Configuration error, try again later.");
-            }
-
-            return jwtService.GetAccessToken(
-                issuer,
-                audience,
-                key,
-                30,
-                [
-                    new("username", user.UserName!),
-                    new("firstName", user.FirstName),
-                    new("lastName", user.LastName),
-                    new("Email", user.Email!)
-                ]
-            );
+            return jwtService.GetAccessToken(claims);
         }
 
         public async Task<string> LoginUsingEmailAsync(LoginUsingEmailDto dto)

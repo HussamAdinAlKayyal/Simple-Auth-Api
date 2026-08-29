@@ -1,30 +1,18 @@
 using BasicAuthApi;
 using BasicAuthApi.Infrastructures;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using BasicAuthApi.Infrastructures.Errors.Handlers;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
 builder.AddDependencies();
+
 builder.AddDbContext();
 builder.AddIdentityServices();
+builder.ConfigureAuthenticationAndAuthorization();
 
-builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new()
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
-    };
-});
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>().AddProblemDetails();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -37,10 +25,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MigrateDb();
+app.UseExceptionHandler();
+
+await app.MigrateDbAsync();
+
+await app.SeedDbAsync();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

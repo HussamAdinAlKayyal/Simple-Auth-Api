@@ -12,9 +12,10 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
         logger.LogError(exception, "Unexpected error occurred: {Message}", exception.Message);
         var (statusCode, title) = exception switch
         {
-            KeyNotFoundException => (404, "Resource not found"),
-            ArgumentException => (400, "Bad request"),
-            _ => (500, "Server-side error"),
+            KeyNotFoundException => (StatusCodes.Status404NotFound, "Resource not found"),
+            ArgumentException => (StatusCodes.Status400BadRequest, "Bad request"),
+            UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "You are not authorized to do this action"),
+            _ => (StatusCodes.Status500InternalServerError, "Server-side error"),
         };
         ProblemDetails details = new()
         {

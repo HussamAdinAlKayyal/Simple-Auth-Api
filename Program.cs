@@ -1,6 +1,5 @@
 using BasicAuthApi;
 using BasicAuthApi.Infrastructures;
-using BasicAuthApi.Infrastructures.Errors.Handlers;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +11,7 @@ builder.AddDbContext();
 builder.AddIdentityServices();
 builder.ConfigureAuthenticationAndAuthorization();
 
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>().AddProblemDetails();
+builder.AddErrorHandlingServices();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

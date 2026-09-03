@@ -2,26 +2,27 @@
 using BasicAuthApi.Infrastructures.Interfaces;
 using BasicAuthApi.Models;
 using BasicAuthApi.Models.Dtos;
+using BasicAuthApi.Models.Mappers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BasicAuthApi.Infrastructures.Implementations;
 
-public class UserService(UserManager<User> userManager) : IUserService
+internal class UserService(UserManager<User> userManager) : IUserService
 {
     private readonly UserManager<User> userManager = userManager;
 
     public async Task<IEnumerable<UserDetailsDto>> GetAllAsync()
     {
-        return await userManager.Users.Select(u => new UserDetailsDto(u.UserName!, u.FirstName, u.LastName, u.Email!)).ToListAsync();
+        return await userManager.Users.Select(u => u.AsUserDetailsDto()).ToListAsync();
     }
     
     public async Task<UserDetailsDto> GetUserByIdAsync(string id)
     {
         User? user = await userManager.FindByIdAsync(id);
-        return user == null
+        return user is null
             ? throw new KeyNotFoundException("No user with this id!")
-            : new UserDetailsDto(user.UserName!, user.FirstName, user.LastName, user.Email!);
+            : user.AsUserDetailsDto();
     }
 
     public async Task AddRoleToUserAsync(string id, string role)

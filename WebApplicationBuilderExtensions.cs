@@ -1,4 +1,5 @@
 ﻿using BasicAuthApi.Infrastructures.Data;
+using BasicAuthApi.Infrastructures.Errors.Handlers;
 using BasicAuthApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -45,5 +46,11 @@ public static class WebApplicationBuilderExtensions
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSection["Key"]!))
             };
         });
+        builder.Services.AddAuthorization();
+    }
+
+    public static void AddErrorHandlingServices(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>().AddProblemDetails();
     }
 }

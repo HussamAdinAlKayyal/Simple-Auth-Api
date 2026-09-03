@@ -1,4 +1,4 @@
-﻿namespace BasicAuthApi.Infrastructures.Implementations;
+﻿namespace BasicAuthApi.Configurations;
 
 public class JwtConfiguration
 {

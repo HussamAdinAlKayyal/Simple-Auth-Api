@@ -4,4 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BasicAuthApi.Infrastructures.Data;
 
-public class ApplicationDbContext(DbContextOptions options) : IdentityDbContext<User>(options) {}
+public class ApplicationDbContext(DbContextOptions options) : IdentityDbContext<User>(options) 
+{
+    public DbSet<Todo> Todos => Set<Todo>();
+}

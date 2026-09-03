@@ -1,4 +1,5 @@
-﻿using BasicAuthApi.Infrastructures.Implementations;
+﻿using BasicAuthApi.Configurations;
+using BasicAuthApi.Infrastructures.Implementations;
 using BasicAuthApi.Infrastructures.Interfaces;
 
 namespace BasicAuthApi.Infrastructures;
@@ -11,6 +12,8 @@ public static class DependencyInjection
         builder.Services.AddScoped<IRegisterService, RegisterService>();
         builder.Services.AddScoped<ILoginService, LoginService>();
         builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<ITodoService, TodoService>();
+
         builder.Services.AddSingleton<JwtConfiguration>();
     }
 }

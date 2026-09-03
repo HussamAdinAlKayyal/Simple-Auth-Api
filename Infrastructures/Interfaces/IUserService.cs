@@ -6,4 +6,5 @@ public interface IUserService
 {
     Task<IEnumerable<UserDetailsDto>> GetAllAsync();
     Task<UserDetailsDto> GetUserByIdAsync(string id);
+    Task AddRoleToUserAsync(string id, string role);
 }

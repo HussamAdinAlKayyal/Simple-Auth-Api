@@ -1,4 +1,5 @@
-﻿using BasicAuthApi.Infrastructures.Data;
+﻿using BasicAuthApi.Configurations;
+using BasicAuthApi.Infrastructures.Data;
 using BasicAuthApi.Infrastructures.Errors;
 using BasicAuthApi.Models;
 using Microsoft.AspNetCore.Identity;
@@ -40,23 +41,23 @@ public static class WebApplicationExtensions
             adminRoleResult.ThrowIfNotSucceeded();
         }
 
-        IdentityRole? userRole = await roleManager.FindByNameAsync("User");
+        IdentityRole? userRole = await roleManager.FindByNameAsync(Roles.User);
 
         if (userRole is null)
         {
-            userRoleResult = await roleManager.CreateAsync(new("User"));
+            userRoleResult = await roleManager.CreateAsync(new(Roles.User));
             userRoleResult.ThrowIfNotSucceeded();
         }
 
-        if (!await userManager.IsInRoleAsync(user, "Admin"))
+        if (!await userManager.IsInRoleAsync(user, Roles.Admin))
         {
-            identityResult = await userManager.AddToRoleAsync(user, "Admin");
+            identityResult = await userManager.AddToRoleAsync(user, Roles.Admin);
             identityResult.ThrowIfNotSucceeded();
         }
 
-        if (!await userManager.IsInRoleAsync(user, "User"))
+        if (!await userManager.IsInRoleAsync(user, Roles.User))
         {
-            identityResult = await userManager.AddToRoleAsync(user, "User");
+            identityResult = await userManager.AddToRoleAsync(user, Roles.User);
             identityResult.ThrowIfNotSucceeded();
         }
     }

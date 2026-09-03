@@ -1,4 +1,5 @@
-﻿using BasicAuthApi.Infrastructures.Interfaces;
+﻿using BasicAuthApi.Configurations;
+using BasicAuthApi.Infrastructures.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace BasicAuthApi.Infrastructures.Implementations;
 
-public class JwtService(JwtConfiguration jwt) : IJwtService
+internal class JwtService(JwtConfiguration jwt) : IJwtService
 {
     private readonly JwtConfiguration jwt = jwt;
 

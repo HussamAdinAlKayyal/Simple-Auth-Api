@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace BasicAuthApi.Infrastructures.Implementations;
 
-public class RegisterService(UserManager<User> userManager, IJwtService jwtService) : IRegisterService
+internal class RegisterService(UserManager<User> userManager, IJwtService jwtService) : IRegisterService
 {
     private readonly UserManager<User> userManager = userManager;
     

@@ -1,9 +1,9 @@
-﻿using BasicAuthApi.Infrastructures;
+﻿using BasicAuthApi.Configurations;
+using BasicAuthApi.Infrastructures;
 using BasicAuthApi.Infrastructures.Interfaces;
 using BasicAuthApi.Models.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace BasicAuthApi.Controllers;
 
@@ -73,16 +73,24 @@ public class AuthController(IRegisterService registerService, ILoginService logi
 
     [HttpGet("me")]
     [Authorize(Roles = "User")]
-    public ActionResult<UserDetailsDto> GetSignedUser()
+    public ActionResult<UserDetailsDto> GetSignedInUser()
     {
         UserDetailsDto dto = User.MapClaimsToUserDetails();
         return Ok(dto);
     }
 
     [HttpGet("all")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<ActionResult<IEnumerable<UserDetailsDto>>> GetAllUsersAsync()
     {
         return Ok(await userService.GetAllAsync());
+    }
+
+    [HttpPost("add-role/{id}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<ActionResult> AddRoleToUser(string id, string role)
+    {
+        await userService.AddRoleToUserAsync(id, role);
+        return Ok();
     }
 }

@@ -1,8 +1,68 @@
-GET https://localhost:7054/api/auth/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoic3RyaW5nIiwiZmlyc3ROYW1lIjoic3RyaW5nIiwibGFzdE5hbWUiOiJzdHJpbmciLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJzdHJpbmdAZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwibmJmIjoxNzg4MDIyNzA4LCJleHAiOjE3ODgwMjQ1MDgsImlzcyI6IkFwcGxpY2F0aW9uQXBpIiwiYXVkIjoiQXBwbGljYXRpb25DbGllbnQifQ.i-yXIzZj0rKjzw31JetGtqhXbPz1o4KERwK5wh3eJlY
+@baseUrl = https://localhost:7054/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6Ijc3YjMxZWU1LWE3N2YtNDJmNi1iODA3LWEyMTNjZjcwNTM2MSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJBZG1pbiIsImZpcnN0TmFtZSI6IkZpcnN0IG5hbWUgb2YgdGhlIGFkbWluIiwibGFzdE5hbWUiOiJIaXMgb3IgaGVyIGxhc3QgbmFtZSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFkbWluQGFkbWluLmNlbyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJBZG1pbiIsIlVzZXIiXSwibmJmIjoxNzg4MTIxMzY4LCJleHAiOjE3ODk0MzUzNjgsImlzcyI6IkFwcGxpY2F0aW9uQXBpIiwiYXVkIjoiQXBwbGljYXRpb25DbGllbnQifQ.GnuCdRxhvilATNQbKYcPzjpzg5yPo_SPSCwtUKEAaik
+@auth = Authorization: Bearer {{token}}
 
 ###
-GET https://localhost:7054/api/auth/all
-Authroization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQWRtaW4iLCJmaXJzdE5hbWUiOiJGaXJzdCBuYW1lIG9mIHRoZSBhZG1pbiIsImxhc3ROYW1lIjoiSGlzIG9yIGhlciBsYXN0IG5hbWUiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbkBhZG1pbi5jZW8iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiQWRtaW4iLCJVc2VyIl0sIm5iZiI6MTc4ODAyMzA0NSwiZXhwIjoxNzg4MDI0ODQ1LCJpc3MiOiJBcHBsaWNhdGlvbkFwaSIsImF1ZCI6IkFwcGxpY2F0aW9uQ2xpZW50In0.J09Gab_z5w24jvf5cQSzgfPgTeIDsrFVtW3ONSpBuRw
+POST {{baseUrl}}/todos/list
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+[
+  {
+    "title": "Title 1",
+    "description": "Description 1"
+  },
+  {
+    "title": "Title 2",
+    "description": "Description 2"
+  },
+  {
+    "title": "Title 3",
+    "description": "Description 3"
+  },
+  {
+    "title": "Title 4",
+    "description": "Description 4"
+  },
+  {
+    "title": "Title 5",
+    "description": "Description 5"
+  },
+  {
+    "title": "Title 6",
+    "description": "Description 6"
+  },
+  {
+    "title": "Title 7",
+    "description": "Description 7"
+  },
+  {
+    "title": "Title 8",
+    "description": "Description 8"
+  },
+  {
+    "title": "Title 9",
+    "description": "Description 9"
+  }
+]
 
 ###
+GET {{baseUrl}}/todos/3
+Authorization: Bearer {{token}}
+
+###
+GET {{baseUrl}}/todos/admin/all
+Authorization: Bearer {{token}}
+
+###
+PUT {{baseUrl}}/todos/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "isCompleted": true
+}
+
+###
+DELETE {{baseUrl}}/todos/3
+Authorization: Bearer {{token}}
